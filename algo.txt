@@ -1,3 +1,53 @@
 programme grayscale
+    nbLignes, nbColonnes: entier
+    Tab[nbColonnes, nbLignes]: entier
+    TabRes[nbColonnes,nbLignes]: entier
+    x, y: entier
+    noir: booléen
+    luminosité: entier
+    taux: entier
 debut
+
+    nbLignes <- 5
+    nbColonnes <- 4
+
+    pour x de 0 jusqu'à nbColonnes - 1
+        pour y de 0 jusqu'à nbLignes - 1
+            Tab[x, y] <- aleatoire(0, 255)
+        finpour
+    finpour
+
+    # Question 2.
+    noir <- vrai
+    pour x de 0 jusqu'à nbColonnes - 1
+        pour y de 0 jusqu'à nbLignes - 1
+            si Tab[x, y] <> 0 et noir = vrai alors
+                noir <- faux
+            finsi
+        finpour
+    finpour
+    afficher "uniquement noire : ", noir
+
+    # calcul de la luminosité
+    pour x de 0 jusqu'à nbColonnes - 1
+        pour y de 0 jusqu'à nbLignes - 1
+            luminosité <- luminosité + Tab[x, y]
+        finpour
+    finpour
+    luminosité <- int(luminosité / (nbColonnes * nbLignes))
+    afficher "luminosité = ", luminosité
+
+    # nouvelle image plus contrastée
+    taux <- 10
+    pour x de 0 jusqu'à nbColonnes - 1
+        pour y de 0 jusqu'à nbLignes - 1
+            si Tab[x, y] > luminosité alors
+                Tab[x, y] <- int(Tab[x, y] + math.log(Tab[x, y] - luminosité) * taux)
+                Tab[x, y] <- min(Tab[x, y], 255)
+            sinon si Tab[x, y] < luminosité alors
+                Tab[x, y] <- int(Tab[x, y] - math.log(luminosité - Tab[x, y]) * taux)
+                Tab[x, y] <- max(Tab[x, y], 0)
+            finsi
+        finpour
+    finpour
 fin
